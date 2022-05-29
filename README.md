@@ -130,10 +130,11 @@ qqline(group2$Length)
 qqnorm(group3$Length)
 qqline(group3$Length)
 ```
+grup 1
 ![image](https://user-images.githubusercontent.com/70748569/170881816-3c773c45-e8b8-4301-8aa9-b2abee8587f3.png)
-
+grup 2
 ![image](https://user-images.githubusercontent.com/70748569/170881829-4073de81-0e32-4c10-aba1-d4d6d1bf573d.png)
-
+grup 3
 ![image](https://user-images.githubusercontent.com/70748569/170881856-905e6e6d-1c65-4c16-a4f0-5717581f7ca9.png)
 
 ### 4b
@@ -161,4 +162,53 @@ dari c, didapatkan nilai p = 0.8054, nilai p > dari alpha = 0.05, maka H0 diteri
 ![image](https://user-images.githubusercontent.com/70748569/170881993-2f4bb69a-efa8-4780-b8c7-ac2acf03baa4.png)
 
 ![image](https://user-images.githubusercontent.com/70748569/170881979-9584e0ab-0bf2-487e-ad29-62644f3dbea4.png)
+
+
+## 5
+inisiasi data
+```r
+mydata <- read.csv(file.choose()) 
+# pilih file datano5.csv
+```
+### 5.a
+![image](https://user-images.githubusercontent.com/70748569/170882305-db97a67a-c5bd-47cb-8263-ebf3bac7c4b6.png)
+
+### 5.b
+```r
+mydata$Glass <- as.factor(mydata$Glass)
+mydata$Temp_Factor <- as.factor(mydata$Temp)
+str(mydata)
+
+mydataaov <- aov(Light ~ Glass*Temp_Factor, data = mydata)
+summary(mydataaov)
+```
+![image](https://user-images.githubusercontent.com/70748569/170882366-dfd92f23-a797-4ecf-996f-bdab18010b27.png)
+
+### 5.c
+```r
+data_summary <- group_by(mydata, Glass, Temp) %>%
+  summarise(mean=mean(Light), sd=sd(Light)) %>%
+  arrange(desc(mean))
+
+print(data_summary)
+```
+![image](https://user-images.githubusercontent.com/70748569/170882433-c74ac7fc-7d1d-4e56-b889-d4be4a276243.png)
+
+
+### 5.d
+```r
+tukey <- TukeyHSD(mydataaov)
+print(tukey)
+```
+![image](https://user-images.githubusercontent.com/70748569/170882523-199d9e05-43fb-4630-8ae8-8afa679db85c.png)
+![image](https://user-images.githubusercontent.com/70748569/170882525-e57a968a-c5f6-42af-a1bd-026786876786.png)
+
+
+### 5.e
+```r
+tukey.cld <- multcompLetters4(mydataaov, tukey)
+print(tukey.cld)
+```
+![image](https://user-images.githubusercontent.com/70748569/170882566-b31580a0-5133-4bcf-8e00-3b6bb4f076e7.png)
+
 
